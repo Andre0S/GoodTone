@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <include layout="@layout/content_checkout" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/close_btn"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="16dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_close_24dp"
+        app:backgroundTint="@color/colorBlack"
+        app:elevation="6dp"
+        app:fabSize="normal"
+        app:hoveredFocusedTranslationZ="0dp"
+        app:rippleColor="@color/colorAccent" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/next_btn"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_foward_24dp"
+        android:visibility="invisible"
+        app:backgroundTint="@color/colorBlack"
+        app:elevation="6dp"
+        app:fabSize="normal"
+        app:hoveredFocusedTranslationZ="0dp"
+        app:rippleColor="@color/colorAccent" />
+
+</android.support.design.widget.CoordinatorLayout>

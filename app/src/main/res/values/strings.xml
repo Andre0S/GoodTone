@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Good Tone</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="text_timer_format">MM:SS</string>
+    <string name="text_speech_motivation">Express yourself!\nTalk!</string>
+    <string name="text_speech_time_hint">Maximum amount of time\nis 3 minutes.</string>
+
+    <string name="text_speech_result">Place for result of\nspeech</string>
+    <string name="text_speech_result_percentage">100%</string>
+    <string name="text_speech_result_percentage_hint">of constance on your voice.</string>
+
+    <string name="text_toast_failure_speech">We couldn\'t recognize\nwhat you\'ve said,\ntryagain!</string>
+    <string name="text_toast_speech_start">Listening...</string>
+    <string name="text_toast_error_call_checkout">Appears that you\'ve said no valid word.\nWe\'re going back to main screen.</string>
+    <string name="text_toast_wait_while_process">Wait a little bit while processing.</string>
+</resources>
