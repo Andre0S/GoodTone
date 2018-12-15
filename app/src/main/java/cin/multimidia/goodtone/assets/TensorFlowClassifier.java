@@ -7,7 +7,6 @@ import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.ShortBuffer;
 import java.util.ArrayList;
 import java.util.List;
 

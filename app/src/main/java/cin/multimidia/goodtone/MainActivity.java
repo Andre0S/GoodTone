@@ -23,6 +23,7 @@ import android.widget.ViewFlipper;
 
 import java.io.File;
 
+import cin.multimidia.goodtone.assets.audioAnalyzer;
 import cin.multimidia.goodtone.threads.voiceRecorder;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private voiceRecorder voiceRecorder;
 
     private File audioFile;
+
+    private audioAnalyzer analyzer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +139,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        this.returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainContainer.setDisplayedChild(0);
+            }
+        });
+
     }
 
     private void startChronometer() {
@@ -161,11 +171,13 @@ public class MainActivity extends AppCompatActivity {
     private void passContentToAudioFile() {
 
         this.audioFile = new File(this.audioDirectory);
+        this.analyzer = new audioAnalyzer(this.audioFile);
 
     }
 
     //NEED FURTHER IMPLEMENTATION OF ELSE
     private void nextStep() {
+        passContentToAudioFile();
         if (this.audioDirectory == null){
             this.optionsDialog = new AlertDialog.Builder(this);
             this.optionsDialog.setTitle("Talk something.");
@@ -181,6 +193,13 @@ public class MainActivity extends AppCompatActivity {
         } else {
             this.mainContainer.setDisplayedChild(3);
             Toast.makeText(MainActivity.this,R.string.text_toast_wait_while_process,Toast.LENGTH_LONG).show();
+            this.analyzer.generateFileSamples();
+            while (!this.analyzer.isFileRead()){
+
+            }
+            this.analyzer.loadModel(getAssets());
+            this.percentageOfConfidence.setText(this.analyzer.getPercentage()+" de "+this.analyzer.getClassifier());
+            this.mainContainer.setDisplayedChild(1);
         }
     }
 

@@ -1,5 +1,6 @@
 package cin.multimidia.goodtone.assets;
 
+import android.content.res.AssetManager;
 import android.media.MediaCodec;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
@@ -8,6 +9,8 @@ import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.ShortBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class audioAnalyzer {
 
@@ -29,24 +32,56 @@ public class audioAnalyzer {
     private boolean percantageCalculated;
     private boolean audioModified;
 
-    public void stopOperation() {
-        stopper = true;
+    private Classifier mClassifiers;
+
+    public audioAnalyzer(File audioInput){
+        this.audioInput = audioInput;
     }
 
-    public boolean isAudioModified() {
-        return audioModified;
+    public void stopOperation() {
+        stopper = true;
     }
 
     public boolean isFileRead() {
         return fileRead;
     }
 
-    public boolean isPercantageCalculated() {
-        return percantageCalculated;
+    public String getClassifier() {
+        return mClassifiers.name();
     }
 
     public double getPercentage() {
-        return percentage;
+        short[] auxiliary = decodedSamples.array();
+        float[] result = new float[auxiliary.length];
+        float multiplier = 1 / (2^16);
+        for (int i =0; i < auxiliary.length; i++) {
+            result[i] = auxiliary[i] * multiplier;
+        }
+        final Classification res = mClassifiers.recognize(result);
+        return res.getConf();
+    }
+
+    public void loadModel(final AssetManager assetManager) {
+        //The Runnable interface is another way in which you can implement multi-threading other than extending the
+        // //Thread class due to the fact that Java allows you to extend only one class. Runnable is just an interface,
+        // //which provides the method run.
+        // //Threads are implementations and use Runnable to call the method run().
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //add 2 classifiers to our classifier arraylist
+                    //the tensorflow classifier and the keras classifier
+                    mClassifiers =
+                            TensorFlowClassifier.create(assetManager, "TensorFlow",
+                                    "opt_emotions.pb", "labels.txt", decodedSamples.array().length,
+                                    "input", "output", true);
+                } catch (final Exception e) {
+                    //if they aren't found, throw an error!
+                    throw new RuntimeException("Error initializing classifiers!", e);
+                }
+            }
+        }).start();
     }
 
     private class fileReader extends Thread {
@@ -240,27 +275,10 @@ public class audioAnalyzer {
 
     }
 
-    private class audioAnalysis extends Thread {
-
-        @Override
-        public void run() {
-
-        }
-
-    }
-
     public void generateFileSamples() {
 
         fileReader fileReader = new fileReader();
         fileReader.run();
-
-    }
-
-    public void calculatePercentage() {
-
-        this.percentage = 0D;
-        audioAnalysis audioAnalyzer = new audioAnalysis();
-        audioAnalyzer.run();
 
     }
 
